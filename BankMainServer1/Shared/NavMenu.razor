@@ -1,0 +1,70 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Main Server</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-dashboard" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="branches">
+                <span class="oi oi-home" aria-hidden="true"></span> Branches
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@url">
+                <span class="oi oi-people" aria-hidden="true"></span> Employees
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="showdatabase">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Show Database
+            </NavLink>
+        </div>
+
+        @if (login.posision == "super")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="admindashboard">
+                    <span class="oi oi-person" aria-hidden="true"></span> Admin Dashboard
+                </NavLink>
+            </div>
+        }
+
+    </nav>
+</div>
+
+@code {
+    [Parameter]
+    public ClientLogin login { get; set; } = new ClientLogin();
+    private bool collapseNavMenu = true;
+    private string url = "employees";
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override void OnInitialized()
+    {
+        login.posision = "super";
+        if(login.posision != "admin")
+        {
+            url = "employees";
+        }
+        else
+        {
+            url = "adminblankpage";
+        }
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

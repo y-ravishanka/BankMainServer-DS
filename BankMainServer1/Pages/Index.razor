@@ -1,0 +1,191 @@
+﻿@page "/"
+
+@inject Database database
+@inject Calculations cal
+
+<PageTitle>Index</PageTitle>
+
+<div class="ps-2">
+    <h1>Main Server</h1>
+    <h4>@date</h4>
+    <h5>@time</h5>
+</div>
+<br />
+
+<div class="container-fliud">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header h4 center_items">
+                    <div>Today Statistics</div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="custom_table">
+                                <tr>
+                                    <td>New Accounts</td>
+                                    <td>: @status.newaccounts</td>
+                                </tr>
+                                <tr>
+                                    <td>Transactions</td>
+                                    <td>: @(status.deposits + status.withdraws)</td>
+                                </tr>
+                                <tr>
+                                    <td>Deposits</td>
+                                    <td>: @status.deposits</td>
+                                </tr>
+                                <tr>
+                                    <td>Withdraws</td>
+                                    <td>: @status.withdraws</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="custom_table">
+                                <tr>
+                                    <td>Deposit Balance</td>
+                                    <td>: @status.newaccounts</td>
+                                </tr>
+                                <tr>
+                                    <td>WithDraw Balance</td>
+                                    <td>: @(status.deposits + status.withdraws)</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td>: @status.deposits</td>
+                                </tr>
+                                <tr>
+                                    <td>Withdraws</td>
+                                    <td>: @status.withdraws</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-6 p-3">
+            <div class="card">
+                <div class="card-header h4">
+                    <div>Today Statis Status</div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <table class="custom_table">
+                            <tr>
+                                <td>New Accounts</td>
+                                <td>: @status.newaccounts</td>
+                            </tr>
+                            <tr>
+                                <td>Transactions</td>
+                                <td>: @(status.deposits + status.withdraws)</td>
+                            </tr>
+                            <tr>
+                                <td>Deposits</td>
+                                <td>: @status.deposits</td>
+                            </tr>
+                            <tr>
+                                <td>Withdraws</td>
+                                <td>: @status.withdraws</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 p-3">
+            <div class="card">
+                <div class="card-header h4">
+                    <div>Hello this is the card header</div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <table class="custom_table">
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+</div>
+<br /><br /><br />
+@*<div class="container-fluid">
+    <button class="btn btn-dark px-3 py-1" @onclick="@loadData">Load Data</button>
+    <br /><br />
+    <table class="table">
+        <tr style="background-color:#212529; color:white;">
+            <th>Date</th>
+            <th>Login Time</th>
+            <th>Logout Time</th>
+        </tr>
+        <tbody>
+            @foreach(ActivityLog log in list)
+            {
+                <tr>
+                    <td>@log.id</td>
+                    <td>@log.login</td>
+                    <td>@log.logout</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>*@
+
+@code {
+    [Parameter]
+    public string? nic { get; set; }
+    private static System.Timers.Timer aTimer;
+    private int counter = 60;
+    private string? date;
+    private string? time;
+
+    //private List<ActivityLog> list = new();
+    private FullStatus status = new();
+
+    private void loadData()
+    {
+        //list = database.GetActivityLogs(0, 0);
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        //list = database.GetActivityLogs(0, 0);
+        status.newaccounts = 3;
+        status.deposits = 7;
+        status.withdraws = 10;
+        time = DateTime.Now.ToString("HH:mm:ss");
+        StartTimer();
+        SetDate();
+    }
+
+    private void SetDate()
+    { 
+        date = cal.GetDate(); 
+    }
+
+    private void StartTimer()
+    {
+        aTimer = new System.Timers.Timer(1000);
+        aTimer.Elapsed += CountDownTimer;
+        aTimer.Enabled = true;
+    }
+
+    private void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 1;
+            time = DateTime.Now.ToString("HH:mm:ss");
+        }
+        else
+        {
+            counter = 60;
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+
+}

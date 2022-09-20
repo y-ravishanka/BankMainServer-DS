@@ -1,0 +1,21 @@
+﻿
+.center_items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom_card {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 10px 20px #212529;
+    border-radius: 10px;
+}
+
+.custom_table td {
+    font-size: 20px;
+    padding-left: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}

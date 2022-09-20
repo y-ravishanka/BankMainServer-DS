@@ -1,0 +1,626 @@
+﻿
+@page "/branches"
+
+@inject Database database
+
+<PageTitle>Branches</PageTitle>
+
+<div class="container-fluid">
+    <h1>Branch Management</h1>
+    <br />
+    <div class="row justify-content-center" style="background-color: #212529;">
+        <button class="button_custom item_center" @onclick="@(e=>setNave(0))" style="@ccss[0]">Branches Informations</button>
+        <button class="button_custom item_center" @onclick="@(e=>setNave(1))" style="@ccss[1]">Add Branch</button>
+        <button class="button_custom item_center" @onclick="@(e=>setNave(2))" style="@ccss[2]">Update Branch</button>
+    </div>
+
+    @* branches information section *@
+    @if (nav == 0)
+    {
+        <div class="container-fluid">
+            <br /> 
+            <div class="container-fluid item_center">
+                <h2>Branches Informations</h2>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="container-fluid item_right">
+
+                    <div class="container item_right">
+                        <table>
+                            <tr>
+                                <td>Search by Branch ID :</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="w3-input search_input my-1 px-1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="search_button">Search</button>
+                                    <button class="search_button">Clear</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="card my-2">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="container-fluid item_right">
+                                <button class="none_button">
+                                    <span class="oi oi-x"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="container-fluid">
+
+                                <h3>Branch - Name</h3>
+                                <h5>City</h5>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Basic Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>ID </td>
+                                                        <td>: @branch.id</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Name </td>
+                                                        <td>: @branch.name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Manager ID </td>
+                                                        <td>: @branch.managerid</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Contact Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Phone Number 1 </td>
+                                                        <td>: @branch.phone1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Phone Number 2</td>
+                                                        <td>: @branch.phone2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email </td>
+                                                        <td>: @branch.email</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Location Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Address </td>
+                                                        <td>: @branch.saddress</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>City </td>
+                                                        <td>: @branch.city</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Distric </td>
+                                                        <td>: @branch.distric</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Province </td>
+                                                        <td>: @branch.province</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Zip Code </td>
+                                                        <td>: @branch.zip</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <h4>All Branches</h4>
+                <div class="container-fluid overflow-auto" style="height: 500px;">
+
+                    <table class="table">
+
+                        <thead>
+                            <tr class="table_style">
+                                <th>Branch ID</th>
+                                <th>City</th>
+                                <th>Manager ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (Branch br in branches)
+                            {
+                                <tr>
+                                    <td>@br.id</td>
+                                    <td>@br.city</td>
+                                    <td>@br.managerid</td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+    @* add branches section *@
+    @if (nav == 1)
+    {
+        <div class="container-fluid">
+            <br /> 
+            <div class="container-fluid item_center">
+                <h2>Add Branches</h2>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="card my-2">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="container-fluid">
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Basic Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Name </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Manager ID </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Contact Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Phone Number 1 </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Phone Number 2</td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Location Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Province </td>
+                                                        <td>
+                                                            <select class="ms-3 px-1 my-1 py-1" style="width:300px;" @onchange="ChangeSelectProvince">
+                                                                <option selected disabled>-- select a province --</option>
+                                                                @for(int i=0;i<province.Count;++i)
+                                                                {
+                                                                    <option value="@i">@province[i]</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Distric </td>
+                                                        <td>
+                                                            <select class="ms-3 px-1 my-1 py-1" style="width:300px;" @onchange="ChangeSelectDistrict">
+                                                                <option selected disabled>-- select a district --</option>
+                                                                @for(int i=0;i<district[selectedProvince].Length;++i)
+                                                                {
+                                                                    <option value="@i">@district[selectedProvince][i]</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>City </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Zip Code </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                            
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="container-fluid item_right">
+                                <div>
+                                    <button class="search_button">New</button>
+                                    <button class="search_button">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+            
+
+    @* update branches section *@
+    @if (nav == 2)
+    {
+        <div class="container-fluid">
+            <br /> 
+            <div class="container-fluid item_center">
+                <h2>Update Branches</h2>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="container-fluid item_right">
+
+                    <div class="container item_right">
+                        <table>
+                            <tr>
+                                <td>Search by Branch ID :</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="w3-input search_input my-1 px-1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="search_button">Search</button>
+                                    <button class="search_button">Clear</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="card my-2">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="container-fluid">
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Basic Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Name </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Manager ID </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Contact Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Phone Number 1 </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Phone Number 2</td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="card mt-2">
+
+                                            <div class="card-header">
+                                                Location Informations
+                                            </div>
+
+                                            <div class="card-body">
+                                                <table>
+
+                                                    <tr>
+                                                        <td>Province </td>
+                                                        <td>
+                                                            <select class="ms-3 px-1 my-1 py-1" style="width:300px;" @onchange="ChangeSelectProvince">
+                                                                <option selected disabled>-- select a province --</option>
+                                                                @for(int i=0;i<province.Count;++i)
+                                                                {
+                                                                    <option value="@i">@province[i]</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Distric </td>
+                                                        <td>
+                                                            <select class="ms-3 px-1 my-1 py-1" style="width:300px;" @onchange="ChangeSelectDistrict">
+                                                                <option selected disabled>-- select a district --</option>
+                                                                @for(int i=0;i<district[selectedProvince].Length;++i)
+                                                                {
+                                                                    <option value="@i">@district[selectedProvince][i]</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>City </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Zip Code </td>
+                                                        <td>
+                                                            <input class="w3-input ms-3 my-1 px-1" style="width:300px;">
+                                                            
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="container-fluid item_right">
+                                <div>
+                                    <button class="search_button">Update</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@code {
+    List<Branch> branches = new();
+    Branch branch = new();
+    private string[]? ccss = new string[3];
+    private int nav = 0;
+    private List<string> province = new();
+    private List<string[]> district = new();
+    private string[]? selectDistrict;
+    private int selectedProvince;
+    private int selectedDistrict;
+    StoredDataClass storedData = new();
+
+    protected override void OnInitialized()
+    {
+        province = storedData.GetProvince();
+        district = storedData.GetDistrict();
+        setNave(0);
+    }
+
+    private void click_clear()
+    {
+        
+    }
+
+    private void ChangeSelectProvince(ChangeEventArgs e)
+    {
+        selectedProvince = Convert.ToInt32(e.Value);
+    }
+
+    private void ChangeSelectDistrict(ChangeEventArgs e)
+    {
+        selectedDistrict = Convert.ToInt32(e.Value);
+    }
+
+    private void setNave(int t)
+    {
+        nav = t;
+        setCss(t);
+    }
+
+    private void clearCss()
+    {
+        for(int i=0;i<ccss.Length;++i)
+        {
+            ccss[i] = null;
+        }
+    }
+
+    private void setCss(int t)
+    {
+        clearCss();
+        ccss[t] = "background-color: white; color: #212529;";
+    }
+}
